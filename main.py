@@ -83,8 +83,10 @@ def main():
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("contact", contact))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_user_message))
+    # Admin replies must be handled FIRST
     application.add_handler(MessageHandler(filters.REPLY & filters.TEXT, handle_admin_reply))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_user_message))
+
 
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
